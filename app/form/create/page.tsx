@@ -1,7 +1,5 @@
-"use client";
-
+'use client'
 import { useState } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +11,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import ModeToggle from "@/components/toggle";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CSS
+import axios from "axios";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -32,33 +42,28 @@ export default function Page() {
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
+  const handleSelectChange = (value: string) => {
+    setFormData((prevData) => ({ ...prevData, class: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:5000/api/form/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit the form");
+    await axios.post('/api/jobs', formData, {
+      headers: {
+        'Content-Type': "application/json"
       }
+    })
+      .then(() => toast.success("Form submitted successfully!"))
+      .catch(() => toast.error("An error occurred. Please try again."))
 
-      alert("Form submitted successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred. Please try again.");
-    }
   };
 
   return (
     <div>
-      <ModeToggle />
-      <Card className="mx-auto max-w-2xl mt-8">
+      {/* <Navbar/> */}
+      <Card className="mx-auto max-w-2xl mt-8 mb-8">
         <CardHeader>
           <CardTitle className="text-2xl">Submit Task</CardTitle>
           <CardDescription>
@@ -119,14 +124,28 @@ export default function Page() {
 
             <div className="grid gap-2">
               <Label htmlFor="class">Class</Label>
-              <Input
+              {/* <Input
                 id="class"
                 type="text"
                 placeholder="10th Grade"
                 required
                 value={formData.class}
                 onChange={handleChange}
-              />
+              /> */}
+
+              <Select onValueChange={handleSelectChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your class" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Class</SelectLabel>
+                    <SelectItem value="X">X</SelectItem>
+                    <SelectItem value="XI">XI</SelectItem>
+                    <SelectItem value="XII">XII</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid gap-2">
@@ -170,6 +189,7 @@ export default function Page() {
           </form>
         </CardContent>
       </Card>
+      <ToastContainer />
     </div>
   );
 }

@@ -118,6 +118,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    console.log(body)
+
     const requiredFields = [
       'firstName',
       'lastName',
