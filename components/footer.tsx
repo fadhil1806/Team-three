@@ -28,7 +28,7 @@ const Footer = () => {
                 {/* Lower Section */}
                 <div className="text-center pt-6">
                     <p className="text-sm">
-                        &copy; 2024 Your Company. All rights reserved.
+                        &copy; 2024 Team Tree. All rights reserved.
                     </p>
                     <p className="text-sm mt-2">
                         Designed with by <a href="#" className="hover:underline text-gray-400">Team Tree</a>

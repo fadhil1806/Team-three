@@ -1,4 +1,3 @@
-// Add "use client" at the top to indicate this is a Client Component
 'use client';
 
 import React, { useState } from 'react';
@@ -23,13 +22,13 @@ export default function Navbar() {
                                 <Link href="/" className="text-sm font-medium text-white hover:text-gray-300">
                                     Home
                                 </Link>
-                                <Link href="/team" className="text-sm font-medium text-gray-300 hover:text-white">
+                                <Link href="/#about" className="text-sm font-medium text-gray-300 hover:text-white">
                                     About
                                 </Link>
-                                <Link href="/projects" className="text-sm font-medium text-gray-300 hover:text-white">
+                                <Link href="/form/create" className="text-sm font-medium text-gray-300 hover:text-white">
                                     Form
                                 </Link>
-                                <Link href="/calendar" className="text-sm font-medium text-gray-300 hover:text-white">
+                                <Link href="/#team" className="text-sm font-medium text-gray-300 hover:text-white">
                                     Team
                                 </Link>
                             </div>

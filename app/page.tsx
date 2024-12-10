@@ -17,9 +17,6 @@ const Home = () => {
       <Newsletter />
       <Team />
       <Footer /> 
-
-
-
     </div>
   );
 };
