@@ -1,22 +1,35 @@
 import { Pool } from 'pg';
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+const transporter = nodemailer.createTransport({
+  secure: true,
+  service: 'gmail',
+  auth: {
+    user: 'fadhil8637@smk.belajar.id',
+    pass: process.env.PASSWORD_GMAIL
+  }
+});
+
+async function sendGmail(person: string) {
+  const mailOptions = {
+    from: 'fadhil8637@smk.belajar.id',
+    to: person,
+    subject: 'Konfirmasi Pengumpulan Tugas Anda Berhasil',
+    text: 'Terimakasih sudah mengumpulkan tugas dengan tepat waktu.'
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) throw err;
+    console.log('Email sent: ' + info.response);
+  });
+}
 
 // Pool configuration
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
-
-// Utility Functions
-async function generateId(length: number, type: 'string' | 'number' = 'string') {
-  const characters =
-    type === 'string'
-      ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      : '0123456789';
-  return Array.from({ length }, () =>
-    characters.charAt(Math.floor(Math.random() * characters.length))
-  ).join('');
-}
 
 // Interface
 interface JobData {
@@ -26,7 +39,7 @@ interface JobData {
   email: string;
   telephone: string;
   class: string;
-  subjects: string;
+  assigment_id: string;
   link: string;
   description: string;
 }
@@ -34,7 +47,11 @@ interface JobData {
 async function getDataJobs() {
   const client = await pool.connect();
   try {
-    const { rows } = await client.query('SELECT * FROM jobs');
+    const query = `
+  SELECT * FROM submissions;
+
+`
+    const { rows } = await client.query(query);
     return rows;
   } catch (error) {
     console.error('Error fetching jobs:', error);
@@ -45,21 +62,20 @@ async function getDataJobs() {
 }
 
 async function insertJob(jobData: JobData) {
+  console.log(jobData)
   const client = await pool.connect();
   try {
     const query = `
-      INSERT INTO jobs (id, first_name, last_name, email, telephone, class, subjects, link, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO submissions (first_name, last_name, email, telephone, class_enum, assignments_id, link, description)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `;
-    const id = await generateId(10);
     const values = [
-      id,
       jobData.firstName,
       jobData.lastName,
       jobData.email,
       jobData.telephone,
       jobData.class,
-      jobData.subjects,
+      jobData.assigment_id,
       jobData.link,
       jobData.description,
     ];
@@ -76,24 +92,24 @@ async function updateJob(jobData: JobData) {
   const client = await pool.connect();
   try {
     const query = `
-      UPDATE jobs
-      SET first_name = $2, last_name = $3, email = $4, telephone = $5, class = $6, subjects = $7, link = $8, description = $9
+      UPDATE submissions
+      SET first_name = $2, last_name = $3, email = $4, telephone = $5, class = $6, assigment_id = $7, link = $8, description = $9
       WHERE id = $1
     `;
 
-      const values = [
-        jobData.id,
-        jobData.firstName,
-        jobData.lastName,
-        jobData.email,
-        jobData.telephone,
-        jobData.class,
-        jobData.subjects,
-        jobData.link,
-        jobData.description,
-      ];
+    const values = [
+      jobData.id,
+      jobData.firstName,
+      jobData.lastName,
+      jobData.email,
+      jobData.telephone,
+      jobData.class,
+      jobData.assigment_id,
+      jobData.link,
+      jobData.description,
+    ];
 
-      await client.query(query, values);
+    await client.query(query, values);
   } catch (error) {
     throw error;
   } finally {
@@ -126,7 +142,6 @@ export async function POST(req: NextRequest) {
       'email',
       'telephone',
       'class',
-      'subjects',
       'link',
       'description',
     ];
@@ -142,8 +157,11 @@ export async function POST(req: NextRequest) {
 
     await insertJob(body);
 
+    await sendGmail(body.email)
+
     return NextResponse.json({ message: 'Job created successfully' });
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: 'Error creating job', error },
       { status: 500 }

@@ -10,7 +10,7 @@ const pool = new Pool({
 async function getDataJobs(id: string) {
     const client = await pool.connect();
     try {
-        const { rows } = await client.query('SELECT * FROM jobs WHERE id = $1', [id]);
+        const { rows } = await client.query('SELECT * FROM submissions WHERE id = $1', [id]);
         if (rows.length === 0) return null;
 
         return rows;
@@ -25,7 +25,7 @@ async function getDataJobs(id: string) {
 async function deleteJobs(id: string) {
     const client = await pool.connect()
     try {
-        await client.query('DELETE FROM jobs where id = $1', [id])
+        await client.query('DELETE FROM submissions where id = $1', [id])
     }
     catch (error) {
         console.error('Error querying the database:', error);

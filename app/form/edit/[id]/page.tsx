@@ -44,7 +44,7 @@ export default function Page({ params }: { params: { id: string } }) {
     useEffect(() => {
         const fetchJobData = async () => {
             try {
-                const response = await fetch(`/api/jobs/${params.id}`);
+                const response = await fetch(`/api/submissions/${params.id}`);
                 const data = await response.json();
 
                 if (response.ok && data) {
@@ -85,7 +85,7 @@ export default function Page({ params }: { params: { id: string } }) {
         e.preventDefault();
 
         try {
-            const response = await fetch("/api/jobs", {
+            const response = await fetch("/api/submissions", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

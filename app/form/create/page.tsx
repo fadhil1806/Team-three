@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+
+interface Assignment {
+  id: number;
+  title: string;
+  description: string;
+  due_date: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -32,37 +43,63 @@ export default function Page() {
     email: "",
     telephone: "",
     class: "",
-    subjects: "",
+    assigment_id: "",
     link: "",
     description: "",
   });
+
+  const [task, setTask] = useState<Assignment[]>([]); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
-  const handleSelectChange = (value: string) => {
-    setFormData((prevData) => ({ ...prevData, class: value }));
+  const handleSelectChange = (value: string, name: string) => {
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const response = await axios.get<Assignment[]>('/api/assignments'); // Add type assertion for API response
+        setTask(response.data);
+      } catch {
+        toast.error("Failed to fetch assignments.");
+      }
+    };
+
+    fetchAssignments();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
-    await axios.post('/api/jobs', formData, {
+    await axios.post('/api/submissions', formData, {
       headers: {
         'Content-Type': "application/json"
       }
     })
-      .then(() => toast.success("Form submitted successfully!"))
+      .then(() => {
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          telephone: "",
+          class: "",
+          link: "",
+          description: "",
+          assigment_id: ""
+        })
+        toast.success("Form submitted successfully!")
+      })
       .catch(() => toast.error("An error occurred. Please try again."))
 
   };
 
   return (
-    <div>
-      {/* <Navbar/> */}
+    <>
+      <Navbar />
       <Card className="mx-auto max-w-2xl mt-8 mb-8">
         <CardHeader>
           <CardTitle className="text-2xl">Submit Task</CardTitle>
@@ -123,17 +160,30 @@ export default function Page() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="class">Class</Label>
-              {/* <Input
-                id="class"
-                type="text"
-                placeholder="10th Grade"
-                required
-                value={formData.class}
-                onChange={handleChange}
-              /> */}
+              <Label htmlFor="class">Assigment</Label>
 
-              <Select onValueChange={handleSelectChange}>
+              <Select onValueChange={(value) => handleSelectChange(value, 'assigment_id')} name="assigment_id">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your assignment" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Assignment</SelectLabel>
+                    {task.map((item: Assignment) => (
+                      <SelectItem key={item.id} value={String(item.id)}>
+                        {item.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="class">Class</Label>
+
+              <Select onValueChange={(value) => handleSelectChange(value, 'class')} name="class">
                 <SelectTrigger>
                   <SelectValue placeholder="Select your class" />
                 </SelectTrigger>
@@ -148,17 +198,7 @@ export default function Page() {
               </Select>
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="subjects">Subjects</Label>
-              <Input
-                id="subjects"
-                type="text"
-                placeholder="Mathematics, Science"
-                required
-                value={formData.subjects}
-                onChange={handleChange}
-              />
-            </div>
+
 
             <div className="grid gap-2">
               <Label htmlFor="link">Link</Label>
@@ -190,6 +230,7 @@ export default function Page() {
         </CardContent>
       </Card>
       <ToastContainer />
-    </div>
+      <Footer />
+    </>
   );
 }

@@ -56,7 +56,7 @@ export type Payment = {
   last_name: string;
   email: string;
   telephone: string;
-  class: string;
+  class_enum: string;
   subjects: string;
   link: string;
   description: string;
@@ -108,9 +108,9 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("telephone")}</div>,
   },
   {
-    accessorKey: "class",
+    accessorKey: "class_enum",
     header: "Class",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("class")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("class_enum")}</div>,
   },
 ];
 
@@ -127,7 +127,7 @@ export function TableJobs() {
    useEffect(() => {
      const fetchData = async () => {
        try {
-         const response = await fetch("/api/jobs");
+         const response = await fetch("/api/submissions");
          const data = await response.json();
          setData(data);
        } catch (error) {
@@ -140,7 +140,7 @@ export function TableJobs() {
    const handleDelete = async () => {
      if (deleteId) {
        try {
-         await axios.delete(`/api/jobs/${deleteId}`);
+         await axios.delete(`/api/submissions/${deleteId}`);
          toast.success("Form submitted successfully!");
          setTimeout(() => {
            window.location.reload();
@@ -188,7 +188,7 @@ export function TableJobs() {
        </AlertDialog>
 
        <div className="w-full">
-         <h1 className="text-xl font-bold">Task History</h1>
+         <h1 className="text-xl font-bold">Submissions Task History</h1>
          <div className="flex items-center py-4">
            <Input
              placeholder="Filter emails..."
@@ -196,8 +196,7 @@ export function TableJobs() {
              onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
              className="max-w-sm"
            />
-           {/* Button to Add Data */}
-           <Button variant="outline" className="ml-auto" onClick={() => window.open('/form/create', '_self')}>Add Data</Button>
+           <Button variant="outline" className="ml-auto" onClick={() => window.open('/form/task/create', '_self')}>Add Data</Button>
 
            {/* Dropdown for Column Visibility */}
            <DropdownMenu>
