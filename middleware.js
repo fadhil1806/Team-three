@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server';
+// import jwt from 'jsonwebtoken';
 
 export function middleware(req) {
-    // Get the token from cookies
-    const token = req.cookies.get('authToken'); 
+    const token = req.cookies.get('authToken')?.value;
 
-    // If there's no token, redirect to login
-    if (!token) {
+    if (!token) return NextResponse.redirect(new URL('/login', req.url));
+    
+
+    try {
+        // jwt.verify(token, process.env.JWT_KEY);
+        return NextResponse.next();
+    } catch {
         return NextResponse.redirect(new URL('/login', req.url));
     }
-
-    // If the token exists, continue with the request
-    return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*'], // Apply this middleware to /dashboard and its subpaths
+    matcher: ['/dashboard/:path*'], 
 };

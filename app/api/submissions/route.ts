@@ -42,15 +42,13 @@ interface JobData {
   assigment_id: string;
   link: string;
   description: string;
+  status: string;
 }
 
 async function getDataJobs() {
   const client = await pool.connect();
   try {
-    const query = `
-  SELECT * FROM submissions;
-
-`
+    const query = `SELECT * FROM submissions;`
     const { rows } = await client.query(query);
     return rows;
   } catch (error) {
@@ -61,13 +59,29 @@ async function getDataJobs() {
   }
 }
 
-async function insertJob(jobData: JobData) {
-  console.log(jobData)
+async function getDataTask(id: string) {
   const client = await pool.connect();
+  const {rows} = await client.query('SELECT due_date from assignments where id = $1', [id]);
+  return rows[0]?.due_date
+}
+
+async function insertJob(jobData: JobData) {
+  const client = await pool.connect();
+  const dueDate = await getDataTask(jobData.assigment_id)
+
   try {
+    const currentDate = new Date();
+
+    if (currentDate > dueDate) {
+      jobData.status = 'Late'
+    } else {
+      jobData.status = 'On time'
+    }
+
+
     const query = `
-      INSERT INTO submissions (first_name, last_name, email, telephone, class_enum, assignments_id, link, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO submissions (first_name, last_name, email, telephone, class_enum, assignments_id, link, description, status)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     `;
     const values = [
       jobData.firstName,
@@ -78,6 +92,7 @@ async function insertJob(jobData: JobData) {
       jobData.assigment_id,
       jobData.link,
       jobData.description,
+      jobData.status
     ];
 
     await client.query(query, values);
@@ -134,8 +149,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    console.log(body)
-
     const requiredFields = [
       'firstName',
       'lastName',
@@ -145,6 +158,7 @@ export async function POST(req: NextRequest) {
       'link',
       'description',
     ];
+
 
     for (const field of requiredFields) {
       if (!body[field]) {

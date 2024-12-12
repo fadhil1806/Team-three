@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
 
         client = await pool.connect();
 
-        // Use parameterized query to prevent SQL injection
         const { rows } = await client.query(
             'SELECT * FROM admin WHERE email = $1',
             [email]
