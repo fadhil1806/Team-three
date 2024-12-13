@@ -196,7 +196,7 @@ export function TableJobs() {
              onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
              className="max-w-sm"
            />
-           <Button variant="outline" className="ml-auto" onClick={() => window.open('/form/task/create', '_self')}>Add Data</Button>
+           <Button variant="outline" className="ml-auto" onClick={() => window.open('/form/task/create', '_self')}>Add Task</Button>
 
            {/* Dropdown for Column Visibility */}
            <DropdownMenu>

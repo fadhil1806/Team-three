@@ -11,12 +11,12 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendGmail(person: string) {
+async function sendGmail(person: string, status: string, name:string) {
   const mailOptions = {
     from: 'fadhil8637@smk.belajar.id',
     to: person,
     subject: 'Konfirmasi Pengumpulan Tugas Anda Berhasil',
-    text: 'Terimakasih sudah mengumpulkan tugas dengan tepat waktu.'
+    text: `Terima kasih ${name}, sudah mengumpulkan tugas dengan ${status}.`
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -77,6 +77,8 @@ async function insertJob(jobData: JobData) {
     } else {
       jobData.status = 'On time'
     }
+
+    sendGmail(jobData.email, jobData.status, jobData.firstName)
 
 
     const query = `
@@ -171,7 +173,6 @@ export async function POST(req: NextRequest) {
 
     await insertJob(body);
 
-    await sendGmail(body.email)
 
     return NextResponse.json({ message: 'Job created successfully' });
   } catch (error) {

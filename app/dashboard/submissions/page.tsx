@@ -55,9 +55,9 @@ export default function Page() {
                 <p className="text-xs text-muted-foreground">+20.1% from last week</p>
             </div>
             <div className="aspect-video rounded-xl bg-muted/50 p-3 border bg-card shadow h-[100px] w-full" >
-                <h3 className="tracking-tight text-sm font-medium">Timely Status</h3>
-                <h1 className="text-2xl font-bold">0 Children</h1>
-                <p className="text-xs text-muted-foreground">-50.1% from last week</p>
+                <h3 className="tracking-tight text-sm font-medium">Total SUbjects</h3>
+                <h1 className="text-2xl font-bold">20</h1>
+                <p className="text-xs text-muted-foreground">-10.1% from last week</p>
             </div>
           </div>
           <div className="flex-1 rounded-xl rounded-xl border bg-card text-card-foreground shadow p-3" >

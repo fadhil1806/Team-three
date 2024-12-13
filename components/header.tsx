@@ -23,11 +23,13 @@ const Header = () => {
         {/* Action buttons */}
         <div className="flex justify-center gap-4">
           <Button className="h-[45px]">
-            Get Started
+            <Link href='/#team'>
+              Our Team
+            </Link>
           </Button>
           <Button variant='outline' className="h-[45px]">
             <Link href='/form/create'>
-            Submit Task
+              Submit Task
             </Link>
           </Button>
         </div>

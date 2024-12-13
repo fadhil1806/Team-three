@@ -57,7 +57,7 @@ const Team = () => {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Meet Our Team</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
+
                     <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition duration-300">
                         <div className="bg-green-500 text-white p-4 rounded-full mb-4">
                             <FaCode size={32} />
@@ -74,23 +74,18 @@ const Team = () => {
                     </div>
                     <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition duration-300">
                         <div className="bg-green-500 text-white p-4 rounded-full mb-4">
-                            <FaTasks size={32} />
+                            <FaCode size={32} />
                         </div>
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Hafith M Fauzan</h3>
                         <p className="text-gray-600 dark:text-gray-400">Front-End</p>
                     </div>
                     <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition duration-300">
                         <div className="bg-green-500 text-white p-4 rounded-full mb-4">
-                            <FaUserCircle size={32} />
+                            <FaCode size={32} />
                         </div>
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Sahrul Romadhon</h3>
                         <p className="text-gray-600 dark:text-gray-400">Front-End</p>
                     </div>
-
-            
-
-                 
-
                 </div>
             </div>
         </section>

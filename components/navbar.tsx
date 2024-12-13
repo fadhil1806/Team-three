@@ -15,7 +15,16 @@ export default function Navbar() {
         <nav className="bg-gray-800">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
+                    {/* Logo and desktop menu */}
                     <div className="flex items-center">
+                        {/* Logo */}
+                        <div className="flex-shrink-0">
+                            <Link href="/" className="flex items-center">
+                                <div className="text-white text-lg font-bold tracking-wide">
+                                    Team-Three
+                                </div>
+                            </Link>
+                        </div>
                         {/* Desktop menu */}
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-12">
@@ -34,29 +43,11 @@ export default function Navbar() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Theme toggle */}
                     <div className="hidden md:block">
                         <div className="ml-4 flex items-center md:ml-6">
-                            {/* <button
-                                type="button"
-                                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                            >
-                                <span className="sr-only">View notifications</span>
-                                <svg
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                                    />
-                                </svg>
-                            </button> */}
-                            <ModeToggle/>
+                            <ModeToggle />
                         </div>
                     </div>
 
@@ -91,13 +82,13 @@ export default function Navbar() {
                     <Link href="/" className="block text-base font-medium text-white hover:text-gray-300">
                         Home
                     </Link>
-                    <Link href="/team" className="block text-base font-medium text-gray-300 hover:text-white">
+                    <Link href="/#about" className="block text-base font-medium text-gray-300 hover:text-white">
                         About
                     </Link>
-                    <Link href="/projects" className="block text-base font-medium text-gray-300 hover:text-white">
+                    <Link href="/form/create" className="block text-base font-medium text-gray-300 hover:text-white">
                         Form
                     </Link>
-                    <Link href="/calendar" className="block text-base font-medium text-gray-300 hover:text-white">
+                    <Link href="/#team" className="block text-base font-medium text-gray-300 hover:text-white">
                         Team
                     </Link>
                 </div>
@@ -105,4 +96,3 @@ export default function Navbar() {
         </nav>
     );
 }
-    

@@ -4,21 +4,21 @@ const Statistics = () => {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
                     <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">Transactions every 24 hours</dt>
+                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">Total Subjects</dt>
                         <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                            44 million
+                            44
                         </dd>
                     </div>
                     <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">Assets under holding</dt>
+                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">Total Students</dt>
                         <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                            $119 trillion
+                            70 Person
                         </dd>
                     </div>
                     <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">New users annually</dt>
+                        <dt className="text-base/7 text-gray-600 dark:text-gray-400">Total Teachers</dt>
                         <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                            46,000
+                            10
                         </dd>
                     </div>
                 </dl>
